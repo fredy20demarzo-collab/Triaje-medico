@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Clasificación de Paciente - SaludIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ✅ Usa tu CSS original -->
+  <link rel="stylesheet" href="css/classify.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Solo utilidades locales (no afectan index/login) */
+    .user-line{margin-top:6px}
+    .role-badge{display:inline-block;padding:2px 8px;border-radius:9999px;background:#e5e7eb;color:#111;font-weight:600;font-size:12px;margin-left:6px}
+    .btn-secondary{background:#4b5563;color:#fff}
+  </style>
+</head>
+<body>
+  <!-- ===== NAV (igual que tus páginas) ===== -->
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+    <a href="classify.html" class="active"><i class="fas fa-notes-medical"></i> Clasificación</a>
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+    <a href="consultas.html"><i class="fas fa-info-circle"></i> Consultas</a>
+  </nav>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1><i class="fas fa-stethoscope"></i> Triaje médico inicial con IA</h1>
+    <p>Sistema de agente inteligente para triaje inicial</p>
+    <p class="user-line">
+      <i class="fas fa-user"></i>
+      <span id="userFullName"></span>
+      <span id="userRoleBadge" class="role-badge">Usuario</span>
+    </p>
+    <a href="#" id="btnLogout">Cerrar sesión</a>
+  </header>
+
+  <!-- ===== DESCRIPCIÓN ===== -->
+  <div class="resumen">
+    <strong>Descripción:</strong> Clasifique pacientes según síntomas y nivel de urgencia usando IA. Guarde el historial para clínicas, iglesias y brigadas médicas comunitarias.
+  </div>
+
+  <!-- ===== CONTENIDO ===== -->
+  <main>
+    <div class="card">
+      <h3><i class="fas fa-file-medical"></i> Clasificación de Paciente</h3>
+
+      <form id="formClasificacion" autocomplete="off">
+        <label>Nombre del paciente:
+          <input type="text" id="paciente" maxlength="150" required />
+        </label>
+
+        <label>Número de teléfono del paciente:
+          <input type="tel" id="telefono" maxlength="30" placeholder="Ej: 5551234567"/>
+        </label>
+
+        <label>Síntomas principales:
+          <textarea id="sintomas" rows="3" required placeholder="Describe los síntomas clave..."></textarea>
+        </label>
+
+        <label>Nivel de urgencia (IA y editable):
+          <select id="urgencia" required>
+            <option value="">Seleccione...</option>
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+          </select>
+        </label>
+
+        <label>Recomendaciones (IA, editable):
+          <textarea id="recomendaciones" rows="3" placeholder="Aquí se mostrará la recomendación de la IA..."></textarea>
+        </label>
+
+        <div class="acciones">
+          <button id="btnClasificar" type="button"><i class="fas fa-magnifying-glass"></i> Clasificar paciente</button>
+          <button id="btnGuardar" type="button" class="btn-secondary"><i class="fas fa-save"></i> Guardar información</button>
+        </div>
+        <div id="msgArea" class="help"></div>
+      </form>
+    </div>
+
+    <div class="card historial">
+      <h3><i class="fas fa-rotate"></i> Historial de casos recientes</h3>
+      <div class="tabla-resumen">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha/Hora</th>
+              <th>Paciente</th>
+              <th>Urgencia</th>
+              <th>Síntomas</th>
+              <th>Comentario IA</th>
+            </tr>
+          </thead>
+          <tbody id="historialBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 SaludIA | Sistema experto para triaje médico inicial</footer>
+
+  <!-- Scripts (orden igual a tus páginas buenas) -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/classify.js"></script>
+  <script>
+    // Mostrar nombre y rol como lo tenías
+    Auth.requireAuth();
+    document.getElementById('btnLogout').addEventListener('click', Auth.logout);
+    (function(){
+      const t = Auth.getToken?.() || localStorage.getItem('saludia_token') || '';
+      let p = {};
+      try { p = JSON.parse(atob(t.split('.')[1]||'')); } catch {}
+      document.getElementById('userFullName').textContent = p.full_name || p.name || p.email || 'Usuario';
+      const role = p.role_name || (p.role_id===1 ? 'Administrador' : 'Usuario');
+      document.getElementById('userRoleBadge').textContent = role;
+    })();
+  </script>
+</body>
+</html>

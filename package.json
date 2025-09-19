@@ -1,20 +1,31 @@
 {
-  "name": "saludia-backend",
+  "name": "saludia-medical-triage-app",
   "version": "1.0.0",
-  "type": "commonjs",
-  "main": "src/server.js",
+  "description": "A medical triage system that classifies patients based on symptoms and urgency levels, with future integration of an AI engine for triage procedures.",
+  "main": "src/scripts/main.js",
   "scripts": {
-    "dev": "node --watch src/server.js",
-    "start": "node src/server.js",
-    "hash": "node src/utils/password.js --make-hash"
+    "start": "live-server public",
+    "build": "echo 'Build process not defined yet.'",
+    "test": "echo 'No tests defined.'"
   },
+  "keywords": [
+    "medical",
+    "triage",
+    "healthcare",
+    "AI"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "2.4.3",
-    "cors": "2.8.5",
-    "dotenv": "16.4.5",
-    "express": "4.19.2",
-    "jsonwebtoken": "9.0.2",
-    "mysql2": "3.11.0"
+    "express": "^5.1.0",
+    "live-server": "^1.2.1"
+  },
+  "homepage": "https://github.com/yourusername/saludia-medical-triage-app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/saludia-medical-triage-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/saludia-medical-triage-app/issues"
   }
 }

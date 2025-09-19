@@ -6,8 +6,6 @@ SaludIA is a web-based medical triage system designed to assist healthcare profe
 ## Project Structure
 The project is organized into the following directories and files:
 
-http://3.86.176.124/
-
 ```
 saludia-medical-triage-app
 ├── public

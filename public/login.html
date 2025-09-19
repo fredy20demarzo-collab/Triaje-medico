@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - SaludIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/classify.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+    <a href="classify.html"><i class="fas fa-notes-medical"></i> Clasificación</a>
+    <a href="login.html" class="active"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+    <a href="consultas.html"><i class="fas fa-info-circle"></i> Consultas</a>
+  </nav>
+
+  <!-- ===== ENCABEZADO ===== -->
+  <header>
+    <h1><i class="fas fa-user-md"></i> Iniciar Sesión</h1>
+    <p>Accede a tu cuenta para gestionar el sistema de triaje médico.</p>
+  </header>
+
+  <!-- ===== FORMULARIO DE LOGIN ===== -->
+  <main>
+    <div class="card">
+      <form id="loginForm">
+        <label for="username">Correo electrónico:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Iniciar Sesión</button>
+      </form>
+      <div class="register-link">
+        <p>¿No tienes una cuenta? <a href="#">Solicitala con tu administrador</a></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    &copy; 2025 Triaje médico con IA | Todos los derechos reservados
+  </footer>
+
+  <!-- ===== SCRIPTS (orden correcto) ===== -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav-active.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

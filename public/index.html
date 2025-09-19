@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SaludIA - Inicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/classify.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+    <a href="classify.html"><i class="fas fa-notes-medical"></i> Clasificación</a>
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+    <a href="consultas.html"><i class="fas fa-info-circle"></i> Consultas</a>
+  </nav>
+
+  <header>
+    <h1><i class="fas fa-user-md"></i> Bienvenido al sistema de triaje médico inicial con IA</h1>
+    <p>Un sistema inteligente para triaje médico inicial, diseñado para ayudar a clasificar pacientes según sus síntomas y nivel de urgencia.</p>
+  </header>
+
+  <div class="resumen">
+    <strong>Descripción:</strong> Aplicación web que clasifica pacientes según síntomas y nivel de urgencia usando reglas predefinidas con inteligencia artificial. Guarda el historial de casos y está diseñada para personal de salud en clínicas, iglesias o brigadas médicas comunitarias.
+  </div>
+
+  <main>
+    <div class="card" style="max-width:680px;margin:0 auto;">
+      <h2>Acceso rápido</h2>
+      <p>Para iniciar debes ingresar con tu usuario y contraseña.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn" href="login.html" style="background:#1e63b6; color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none;">
+          <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+        </a>
+        <a class="btn" href="classify.html" style="background:#0b7; color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none;">
+          <i class="fas fa-notes-medical"></i> Clasificación de Paciente
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 SaludIA | Todos los derechos reservados
+  </footer>
+
+  <!-- Scripts en orden correcto -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav-active.js"></script>
+  
+
+</body>
+</html>

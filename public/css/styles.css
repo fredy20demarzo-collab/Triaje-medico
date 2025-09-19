@@ -1,0 +1,44 @@
+/* --- Estilos generales --- */
+body { background-color: #e9f3f9; }
+.navbar-brand, .navbar-nav .nav-link { font-weight: 600; }
+.badge.rounded-pill { font-size: .75rem; }
+.card-shadow { box-shadow: 0 10px 18px rgba(44,62,80,.12); border: 0; }
+
+/* Botón con estado de carga */
+.btn-loading { position: relative; pointer-events: none; opacity: .85; }
+.btn-loading::after {
+  content: ""; position: absolute; right: 12px; top: 50%; width: 18px; height: 18px;
+  margin-top: -9px; border-radius: 50%; border: 2px solid rgba(255,255,255,.7);
+  border-top-color: transparent; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Tabla responsive simple */
+.table-fixed { table-layout: fixed; }
+.table-fixed td, .table-fixed th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* -------- Badge de rol (blanco redondeado) -------- */
+.role-badge {
+  display: inline-block;
+  background: #ffffff;
+  color: #0b6fbf;             /* azul cabecera */
+  border-radius: 999px;       /* redondeado */
+  padding: 2px 10px;
+  margin-left: .5rem;
+  font-size: .72rem;
+  font-weight: 700;
+  box-shadow: 0 1px 1px rgba(0,0,0,.06);
+}
+
+/* Badge blanco redondeado para el rol */
+.pill{
+  display:inline-block;
+  padding:2px 10px;
+  background:#fff;
+  color:#0b6fbf;       /* azul cabecera */
+  border-radius:999px;
+  font-weight:700;
+  font-size:.72rem;
+  box-shadow:0 1px 1px rgba(0,0,0,.06);
+  margin-left:.4rem;
+}

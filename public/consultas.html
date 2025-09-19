@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Consultas - SaludIA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- DataTables (opcional) -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+  <!-- Estilos base de tu proyecto -->
+  <link rel="stylesheet" href="css/classify.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Overrides para ancho fluido y legibilidad -->
+  <style>
+    :root{
+      --container-max: 1600px;            /* ancho máximo cómodo en desktop grande */
+    }
+
+    /* Layout base centrado */
+    html, body { height: 100%; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main, .main, .page-main {
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: clamp(10px, 2.5vw, 24px) 0;
+    }
+
+    /* Contenedor central: ancho fluido casi de pantalla */
+    .page-center {
+      width: clamp(320px, 96vw, var(--container-max));
+      margin-inline: auto;
+    }
+
+    /* La tarjeta no debe limitar ancho: override por si tu CSS global lo fija */
+    .page-center .card,
+    .page-center .panel,
+    .page-center .box {
+      width: 100% !important;
+      max-width: none !important;
+      box-sizing: border-box;
+    }
+
+    /* Línea de usuario/rol */
+    .user-line { margin-top: 6px; }
+    .role-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 9999px;
+      background: #e5e7eb; color: #111; font-weight: 600; font-size: 12px; margin-left: 6px;
+    }
+
+    /* Filtros fluidos */
+    .filtros {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+    .searchbar {
+      display: flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid #dbeafe; border-radius: 9999px;
+      padding: 6px 12px; box-shadow: 0 2px 6px rgba(0,0,0,.05);
+      flex: 3 1 420px;           /* crece más que los selects */
+    }
+    .searchbar i { color: #6b7280; }
+    .searchbar input { border: none; outline: none; width: 100%; background: transparent; }
+
+    #f_estado, #f_urgencia { flex: 1 1 240px; min-width: 200px; }
+    .count-pill {
+      margin-left: auto;         /* se pega a la derecha si hay espacio */
+      background: #eef2ff; color: #334155; border-radius: 9999px;
+      padding: 4px 10px; font-weight: 600; font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* Badges */
+    .urgencia-badge { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-weight: 700; font-size: 12px; }
+    .urg-alta { background: #fee2e2; color: #b91c1c; }
+    .urg-media { background: #fef9c3; color: #92400e; }
+    .urg-baja  { background: #dcfce7; color: #166534; }
+    .estado-badge { display: inline-block; padding: 4px 8px; border-radius: 9999px; font-size: 12px; font-weight: 600; }
+    .estado-pendiente { background: #fee2e2; color: #b91c1c; }
+    .estado-atendido  { background: #dcfce7; color: #166534; }
+
+    /* Botones de acción */
+    .btn-action { border: none; border-radius: 9999px; padding: 6px 12px; color: #fff; cursor: pointer; }
+    .btn-success { background: #22c55e; }
+    .btn-danger  { background: #ef4444; }
+
+    /* Tabla responsiva y legible */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tabla-consultas {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;                 /* distribución natural del contenido */
+    }
+    .tabla-consultas th, .tabla-consultas td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+      white-space: normal;
+      word-break: normal;
+    }
+    /* Columnas de texto largo: romper palabras si son muy largas */
+    .tabla-consultas td:nth-child(4),
+    .tabla-consultas td:nth-child(6) {
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+    .tabla-consultas th { background: #eaf6fb; color: #0078d7; font-weight: 600; }
+
+    /* Colgroup con proporciones amplias en desktop */
+    .tabla-consultas col:nth-child(1) { width: 10%; } /* Fecha/Hora ingreso */
+    .tabla-consultas col:nth-child(2) { width: 9%;  } /* Paciente */
+    .tabla-consultas col:nth-child(3) { width: 10%; } /* Teléfono */
+    .tabla-consultas col:nth-child(4) { width: 26%; } /* Comentarios (IA) */
+    .tabla-consultas col:nth-child(5) { width: 7%;  } /* Nivel de urgencia */
+    .tabla-consultas col:nth-child(6) { width: 20%; } /* Síntomas */
+    .tabla-consultas col:nth-child(7) { width: 6%;  } /* Estado */
+    .tabla-consultas col:nth-child(8) { width: 7%;  } /* Fecha/Hora atendido */
+    .tabla-consultas col:nth-child(9) { width: 5%;  } /* Acciones */
+
+    /* Ajustes para pantallas medianas (tablets) */
+    @media (max-width: 1024px) {
+      .page-center { width: clamp(320px, 98vw, var(--container-max)); }
+      .tabla-consultas col:nth-child(4) { width: 24%; }
+      .tabla-consultas col:nth-child(6) { width: 18%; }
+    }
+
+    /* Ajustes móviles */
+    @media (max-width: 640px) {
+      .searchbar { flex: 1 1 100%; }
+      #f_estado, #f_urgencia { flex: 1 1 48%; min-width: 0; }
+      .count-pill { margin-left: 0; }
+      th, td { font-size: 0.95rem; }
+      .page-center { width: min(var(--container-max), 98vw); }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+    <a href="classify.html"><i class="fas fa-notes-medical"></i> Clasificación</a>
+    <a href="login.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+    <a href="consultas.html" class="active"><i class="fas fa-info-circle"></i> Consultas</a>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1><i class="fas fa-clipboard-list"></i> Consultas de pacientes</h1>
+    <p>Lista con nombre, teléfono, comentarios (IA), nivel de urgencia, síntomas y estado.</p>
+    <p class="user-line">
+      <i class="fas fa-user"></i>
+      <span id="userFullName"></span>
+      <span id="userRoleBadge" class="role-badge">Usuario</span>
+    </p>
+    <a href="#" id="btnLogout">Cerrar sesión</a>
+  </header>
+
+  <!-- CONTENIDO CENTRADO Y FLUIDO -->
+  <main class="main">
+    <div class="page-center">
+      <div class="card">
+        <div class="filtros">
+          <div class="searchbar">
+            <i class="fas fa-search"></i>
+            <input id="q" type="search" placeholder="Buscar por nombre, teléfono o texto..." />
+          </div>
+
+          <select id="f_estado">
+            <option value="">Estado: todos</option>
+            <option>Pendiente</option>
+            <option>Atendido</option>
+          </select>
+
+          <select id="f_urgencia">
+            <option value="">Urgencia: todas</option>
+            <option>Alta</option>
+            <option>Media</option>
+            <option>Baja</option>
+          </select>
+
+          <span id="count" class="count-pill">0 registro(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="tabla-consultas">
+            <colgroup>
+              <col /><col /><col /><col /><col /><col /><col /><col /><col />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Fecha/Hora ingreso</th>
+                <th>Paciente</th>
+                <th>Teléfono</th>
+                <th>Comentarios (IA)</th>
+                <th>Nivel de urgencia</th>
+                <th>Síntomas</th>
+                <th>Estado</th>
+                <th>Fecha/Hora atendido</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 SaludIA | Sistema experto para triaje médico inicial</footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/consultas.js"></script>
+  <script>
+    Auth.requireAuth();
+    document.getElementById('btnLogout').addEventListener('click', Auth.logout);
+
+    // Pintar usuario/rol desde el token
+    (function () {
+      const t = (Auth.getToken && Auth.getToken()) || localStorage.getItem('saludia_token') || '';
+      let p = {};
+      try { p = JSON.parse(atob((t.split('.')[1] || ''))); } catch {}
+      document.getElementById('userFullName').textContent = p.full_name || p.name || p.email || 'Usuario';
+      const role = p.role_name || (p.role_id === 1 ? 'Administrador' : 'Usuario');
+      document.getElementById('userRoleBadge').textContent = role;
+    })();
+  </script>
+</body>
+</html>
